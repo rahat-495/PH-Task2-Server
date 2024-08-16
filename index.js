@@ -33,18 +33,20 @@ async function run() {
     const booksCollection = client.db("PH-Task2").collection("Books") ;
 
     app.get('/products' , async (req , res) =>{
-      const {currentPage , search , category} = req.query ;
+      const {currentPage , search , category , brand} = req.query ;
       let query = {} ;
-      console.log(category)
-
+      
       if(search){
         query.bookTitle = { $regex: search , $options: 'i' };
       }
       else if(category){
         query.category = category ;
       }
-      else if(search && category){
-        query = { $and : [ { bookTitle : { $regex : search , $options : 'i' } } , category ] }
+      else if(brand){
+        query.brandName = brand ;
+      }
+      else if(category && brand){
+        query = { $and : [ { brandName : brand } , { category : category } ] } ;
       }
 
       const result = await booksCollection.find(query)
