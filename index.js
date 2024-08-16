@@ -56,7 +56,7 @@ async function run() {
       }
 
       const result = await booksCollection.find(query)
-      .skip((parseInt(currentPage) - 1) * 12).limit(12)
+      .skip((parseInt(currentPage) - 1) * 8).limit(8)
       .sort({creationDate : -1})
       .toArray() ;
       res.send(result) ;
