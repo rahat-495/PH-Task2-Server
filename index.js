@@ -35,12 +35,14 @@ async function run() {
     app.get('/products' , async (req , res) =>{
       const {currentPage , search} = req.query ;
       let query = {} ;
+      
       if(search){
         query.bookTitle = { $regex: search, $options: 'i' };
       }
-      const result = await booksCollection.find()
-      .skip(parseInt(currentPage) * 12)
-      .limit(12).sort({creationDate : -1})
+
+      const result = await booksCollection.find(query)
+      .skip((parseInt(currentPage) - 1) * 12).limit(12)
+      .sort({creationDate : -1})
       .toArray() ;
       res.send(result) ;
     })
