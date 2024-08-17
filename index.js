@@ -54,6 +54,14 @@ async function run() {
       if(category && brand && price){
         query = { $and : [ { brandName : brand } , { category : category } , { price : { $gte : parseFloat(price.slice(0,2)) , $lte : parseFloat(price.slice(4)) } } ] } ;
       }
+      if(price && category && brand && price){
+        query = { $and : [ 
+          { brandName : brand } , 
+          { category : category } , 
+          { price : { $gte : parseFloat(price.slice(0,2)) , $lte : parseFloat(price.slice(4)) } } , 
+          { bookTitle : { $regex : search , $options : 'i'} } ] 
+        } 
+      }
 
       let sortOptions = {} ;
       if(priceSort){
