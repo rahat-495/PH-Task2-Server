@@ -79,7 +79,13 @@ async function run() {
       .skip((parseInt(currentPage) - 1) * 8).limit(8)
       .sort(sortOptions)
       .toArray() ;
-      res.send(result) ;
+
+      if(search || price || brand || category){
+        const count = (await booksCollection.find(query).toArray()).length ;
+        return res.send({result , count}) ;
+      }
+        return res.send(result) ;
+      
     })
 
     app.get('/productsCount' , async (req , res) => {
