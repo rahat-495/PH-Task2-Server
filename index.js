@@ -7,7 +7,9 @@ const port = process.env.PORT || 5555
 
 app.use(cors({
     origin : [
-        'http://localhost:5173'
+      'http://localhost:5173',
+      'https://ph-task-c7514.web.app',
+      'https://ph-task-c7514.firebaseapp.com' ,
     ] ,
     credentials : true ,
 })) ;
