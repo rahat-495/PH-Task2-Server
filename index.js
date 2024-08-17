@@ -33,7 +33,7 @@ async function run() {
     const booksCollection = client.db("PH-Task2").collection("Books") ;
 
     app.get('/products' , async (req , res) =>{
-      const {currentPage , search , category , brand , price} = req.query ;
+      const {currentPage , search , category , brand , price , priceSort} = req.query ;
       let query = {} ;
       
       if(search){
@@ -55,9 +55,21 @@ async function run() {
         query = { $and : [ { brandName : brand } , { category : category } , { price : { $gte : parseFloat(price.slice(0,2)) , $lte : parseFloat(price.slice(4)) } } ] } ;
       }
 
+      let sortOptions = {} ;
+      if(priceSort){
+        if(priceSort === 'High To Low'){
+          sortOptions.price = -1 ;
+        }
+        if(priceSort === 'Low To High'){
+          sortOptions.price = 1 ;
+        }
+      }
+
+      sortOptions.creationDate = -1;
+
       const result = await booksCollection.find(query)
       .skip((parseInt(currentPage) - 1) * 8).limit(8)
-      .sort({creationDate : -1})
+      .sort(sortOptions)
       .toArray() ;
       res.send(result) ;
     })
