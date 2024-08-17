@@ -84,8 +84,9 @@ async function run() {
         const count = (await booksCollection.find(query).toArray()).length ;
         return res.send({result , count}) ;
       }
+      else{
         return res.send(result) ;
-      
+      }
     })
 
     app.get('/productsCount' , async (req , res) => {
